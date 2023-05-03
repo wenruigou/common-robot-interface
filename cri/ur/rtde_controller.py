@@ -3,6 +3,7 @@ interface to various robot arms.
 """
 
 import warnings
+import numpy as np
 
 from cri.transforms import quat2axangle, axangle2quat
 from cri.ur.rtde_client import RTDEClient

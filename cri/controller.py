@@ -195,12 +195,14 @@ class RobotController(ABC):
 
 
 from cri.abb.abb_controller import ABBController
+from cri.dummy.dummy_controller import DummyController
 from cri.ur.rtde_controller import RTDEController
 from cri.franka.pyfranka_controller import PyfrankaController
 
 
 Controller = {
     'abb': ABBController,
+    'dummy': DummyController,
     'ur': RTDEController,
     'franka': PyfrankaController
 }
