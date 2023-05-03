@@ -31,7 +31,7 @@ class AsyncNotBusy(RuntimeError):
 
 
 def check_joint_angles(joint_angles):
-    if not (6 <= len(joint_angles) <= 7):
+    if not (4 <= len(joint_angles) <= 7):
         raise InvalidJointAngles
 
 

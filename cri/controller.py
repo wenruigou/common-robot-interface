@@ -196,6 +196,9 @@ class RobotController(ABC):
 
 from cri.abb.abb_controller import ABBController
 from cri.dummy.dummy_controller import DummyController
+from cri.dobot.magician_controller import MagicianController
+from cri.dobot.mg400_controller import MG400Controller
+from cri.dobot.cr_controller import CRController
 from cri.ur.rtde_controller import RTDEController
 from cri.franka.pyfranka_controller import PyfrankaController
 
@@ -203,6 +206,9 @@ from cri.franka.pyfranka_controller import PyfrankaController
 Controller = {
     'abb': ABBController,
     'dummy': DummyController,
+    'magician': MagicianController,
+    'mg400': MG400Controller,
+    'cr': CRController,
     'ur': RTDEController,
     'franka': PyfrankaController
 }
