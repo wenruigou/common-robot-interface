@@ -295,9 +295,9 @@ class SyncRobot(Robot):
     def __init__(self, controller):
         self.controller = controller
         try:
-            self.axes = 'rxyz'
-            self.tcp = (0, 0, 0, 0, 0, 0)           # tool flange frame (euler)
+            self.axes = 'sxyz'
             self.coord_frame = (0, 0, 0, 0, 0, 0)   # base frame (euler)
+            self.tcp = (0, 0, 0, 0, 0, 0)           # tool flange frame (euler)
         except:
             self.controller.close()
             raise
