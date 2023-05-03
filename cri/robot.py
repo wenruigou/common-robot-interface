@@ -176,6 +176,20 @@ class Robot(ABC):
 
     @property
     @abstractmethod
+    def speed(self):
+        """Returns the global speed of the robot TCP.
+        """
+        pass
+
+    @speed.setter
+    @abstractmethod
+    def speed(self, speed):
+        """Sets the global speed of the robot TCP.
+        """
+        pass
+
+    @property
+    @abstractmethod
     def blend_radius(self):
         """Returns the robot blend radius.
         """
@@ -371,6 +385,18 @@ class SyncRobot(Robot):
         self.controller.angular_speed = speed
 
     @property
+    def speed(self):
+        """Returns the speed of the robot TCP.
+        """
+        return self.controller.speed
+    
+    @speed.setter
+    def speed(self, speed):
+        """Sets the global speed of the robot TCP.
+        """
+        self.controller.speed = speed
+    
+    @property
     def blend_radius(self):
         """Returns the robot blend radius (mm).
         """
@@ -509,6 +535,14 @@ class AsyncRobot(Robot):
     @angular_speed.setter
     def angular_speed(self, speed):
         self.sync_robot.angular_speed = speed
+
+    @property
+    def speed(self):
+        return self.sync_robot.speed
+
+    @speed.setter
+    def speed(self, speed):
+        self.sync_robot.speed = speed
 
     @property
     def blend_radius(self):
