@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Robot class provide a common, higher-level interface to various robot arms.
 """
 
@@ -105,8 +104,8 @@ class Robot(ABC):
         with the z-axis aligned with the tool flange center axis.
 
         tool = (x, y, z, alpha, beta, gamma)
-        x, y, z specify a Cartesian position (mm)
-        alpha, beta, gamma specify an euler rotation (degrees)
+        x, y, z specify a Cartesian position
+        alpha, beta, gamma specify an euler rotation
         """
         pass
 
@@ -120,8 +119,8 @@ class Robot(ABC):
         with the z-axis aligned with the tool flange center axis.
 
         tcp = (x, y, z, alpha, beta, gamma)
-        x, y, z specify a Cartesian position (mm)
-        alpha, beta, gamma specify an euler rotation (degrees)
+        x, y, z specify a Cartesian position
+        alpha, beta, gamma specify an euler rotation
         """
         pass
 
@@ -131,8 +130,8 @@ class Robot(ABC):
         """Returns the reference coordinate frame for the robot.
 
         frame = (x, y, z, alpha, beta, gamma)
-        x, y, z specify a Cartesian position (mm)
-        alpha, beta, gamma specify an euler rotation (degrees)
+        x, y, z specify a Cartesian position
+        alpha, beta, gamma specify an euler rotation
         """
         pass
 
@@ -142,50 +141,50 @@ class Robot(ABC):
         """Sets the reference coordinate frame for the robot.
 
         frame = (x, y, z, alpha, beta, gamma)
-        x, y, z specify a Cartesian position (mm)
-        alpha, beta, gamma specify an euler rotation (degrees)
+        x, y, z specify a Cartesian position
+        alpha, beta, gamma specify an euler rotation
         """
         pass
 
     @property
     @abstractmethod
     def linear_speed(self):
-        """Returns the linear speed of the robot TCP (mm/s).
+        """Returns the linear speed of the robot TCP.
         """
         pass
 
     @linear_speed.setter
     @abstractmethod
     def linear_speed(self, speed):
-        """Sets the linear speed of the robot TCP (mm/s).
+        """Sets the linear speed of the robot TCP.
         """
         pass
 
     @property
     @abstractmethod
     def angular_speed(self):
-        """Returns the angular speed of the robot TCP (deg/s).
+        """Returns the angular speed of the robot TCP.
         """
         pass
 
     @angular_speed.setter
     @abstractmethod
     def angular_speed(self, speed):
-        """Sets the angular speed of the robot TCP (deg/s).
+        """Sets the angular speed of the robot TCP.
         """
         pass
 
     @property
     @abstractmethod
     def blend_radius(self):
-        """Returns the robot blend radius (mm).
+        """Returns the robot blend radius.
         """
         pass
 
     @blend_radius.setter
     @abstractmethod
     def blend_radius(self, blend_radius):
-        """Sets the robot blend radius (mm).
+        """Sets the robot blend radius.
         """
         pass
 
@@ -195,7 +194,7 @@ class Robot(ABC):
         """ Returns the robot joint angles.
 
         joint_angles = (j0, j1, j2, j3, j4, j5)
-        j0, j1, j2, j3, j4, j5 specify the joint angles (degrees), numbered
+        j0, j1, j2, j3, j4, j5 specify the joint angles, numbered
         from base to end effector
         """
         pass
@@ -206,7 +205,7 @@ class Robot(ABC):
         """ Returns the target robot joint angles.
 
         joint_angles = (j0, j1, j2, j3, j4, j5)
-        j0, j1, j2, j3, j4, j5 specify the joint angles (degrees), numbered
+        j0, j1, j2, j3, j4, j5 specify the joint angles, numbered
         from base to end effector
         """
         pass
@@ -217,8 +216,8 @@ class Robot(ABC):
         """Returns the TCP pose in the reference coordinate frame.
 
         pose = (x, y, z, alpha, beta, gamma)
-        x, y, z specify a Cartesian position (mm)
-        alpha, beta, gamma specify an euler rotation (degrees)
+        x, y, z specify a Cartesian position
+        alpha, beta, gamma specify an Euler rotation
         """
         pass
 
@@ -228,22 +227,22 @@ class Robot(ABC):
         """Returns the target TCP pose in the reference coordinate frame.
 
         pose = (x, y, z, alpha, beta, gamma)
-        x, y, z specify a Cartesian position (mm)
-        alpha, beta, gamma specify an euler rotation (degrees)
+        x, y, z specify a Cartesian position
+        alpha, beta, gamma specify an Euler rotation
         """
         pass
 
     @property
     @abstractmethod
     def elbow(self):
-        """Returns the current elbow angle (degrees).
+        """Returns the current elbow angle.
         """
         pass
 
     @property
     @abstractmethod
     def target_elbow(self):
-        """Returns the target elbow angle (degrees).
+        """Returns the target elbow angle.
         """
         pass
 
@@ -252,7 +251,7 @@ class Robot(ABC):
         """Executes an immediate move to the specified joint angles.
 
         joint_angles = (j0, j1, j2, j3, j4, j5)
-        j0, j1, j2, j3, j4, j5 specify the joint angles (degrees), numbered
+        j0, j1, j2, j3, j4, j5 specify the joint angles, numbered
         from base to end effector
         """
         pass
@@ -263,9 +262,9 @@ class Robot(ABC):
         specified pose in the reference coordinate frame.
 
         pose = (x, y, z, alpha, beta, gamma)
-        x, y, z specify a Cartesian position (mm)
-        alpha, beta, gamma specify an euler rotation (degrees)
-        elbow = target elbow angle for 7-DOF robot arm (optional; degrees)
+        x, y, z specify a Cartesian position
+        alpha, beta, gamma specify an Euler rotation
+        elbow = target elbow angle for 7-DOF robot arm (optional)
         """
         pass
 
@@ -275,9 +274,9 @@ class Robot(ABC):
         through via_pose, to end_pose in the reference coordinate frame.
 
         via_pose, end_pose = (x, y, z, alpha, beta, gamma)
-        x, y, z specify a Cartesian position (mm)
-        alpha, beta, gamma specify an euler rotation (degrees)
-        elbow = target elbow angle for 7-DOF robot arm (optional; degrees)
+        x, y, z specify a Cartesian position
+        alpha, beta, gamma specify an Euler rotation
+        elbow = target elbow angle for 7-DOF robot arm (optional)
         """
         pass
 
