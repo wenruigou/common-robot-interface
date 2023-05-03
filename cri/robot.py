@@ -335,38 +335,38 @@ class SyncRobot(Robot):
 
     @property
     def coord_frame(self):
-        """Returns the reference coordinate frame for the robot.
+        """Returns the reference coordinate frame for the robot TCP.
         """
         return quat2euler(self._coord_frame_q, self._axes)
 
     @coord_frame.setter
     def coord_frame(self, frame):
-        """Sets the reference coordinate frame for the robot.
+        """Sets the reference coordinate frame for the robot TCP.
         """
         check_pose(frame)
         self._coord_frame_q = euler2quat(frame, self._axes)
 
     @property
     def linear_speed(self):
-        """Returns the linear speed of the robot TCP (mm/s).
+        """Returns the linear speed of the robot TCP.
         """
         return self.controller.linear_speed
 
     @linear_speed.setter
     def linear_speed(self, speed):
-        """Sets the linear speed of the robot TCP (mm/s).
+        """Sets the linear speed of the robot TCP.
         """
         self.controller.linear_speed = speed
 
     @property
     def angular_speed(self):
-        """Returns the angular speed of the robot TCP (deg/s).
+        """Returns the angular speed of the robot TCP.
         """
         return self.controller.angular_speed
 
     @angular_speed.setter
     def angular_speed(self, speed):
-        """Sets the angular speed of the robot TCP (deg/s).
+        """Sets the angular speed of the robot TCP.
         """
         self.controller.angular_speed = speed
 
