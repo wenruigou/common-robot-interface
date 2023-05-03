@@ -9,6 +9,14 @@ The Common Robot Interface (CRI) library currently supports the following robot 
 
 A GUI-based robot jogger tool is also included with the library.  This tool can be used to move the robot into different configurations, and is particularly useful for setting up experiments.
 
+This fork extends the support to these robot arms:
+
+- Dobot Magician
+- Dobot MG400 - using the [TCP-IP-4Axis-Python library](https://github.com/Dobot-Arm/TCP-IP-4Axis-Python) 
+- Simulated robot arm - using the [Tactile Gym library](https://github.com/ac-93/tactile_gym)
+
+A GUI-based robot jogger tool is also included with the library.  This tool can be used to move the robot into different configurations.
+
 ## Installation
 
 To install the package on Windows or Linux, clone the repository and run the setup script from the repository root directory:
@@ -39,6 +47,10 @@ For a UR robot, upload the `/cri/ur/rtde_server.script`URScript file to the cont
 
 For a Franka Panda robot, a server script is not required as the communication with the controller takes place via `libfranka` and the Franka Control Interface (FCI).
 
+For a Dobot Magician robot, a server script is not required as the communication takes places via an API `dobot.dll` supplied by Dobot.
+
+For a Dobot MG400 and CR robot, a server script is not required as the communication takes places via TCP-IP using a library supplied by Dobot.
+
 ## Examples
 
 Some examples that demonstrate how to use the library are included in the `/examples` directory.  These can be modified to suit different system configurations and requirements (e.g., IP address, work space, work frame, etc.)
@@ -54,9 +66,15 @@ After installing and running the server (only needed for ABB and UR robots), the
 	```sh
 	python rtde_robot_test.py
 	```
+
 - For a Franka robot (see [video](https://youtu.be/_hQp4J_aapQ) for expected behaviour) 
 	```sh
 	python pyfranka_robot_test.py
+	```
+
+- For a Dobot MG400 robot
+	```sh
+	python mg400_robot_test.py
 	```
 
 ## Robot jogger
@@ -146,5 +164,9 @@ Note that every call to an asynchronous move command must be followed by a corre
 John Lloyd – jlloyd237@gmail.com
 
 Distributed under the GPL v3 license. See ``LICENSE`` for more information.
+
+Extension of CRI to use with Dobot Robots and Tactile simulator:
+
+Nathan Lepora - n.lepora@bristol.ac.uk
 
 [https://github.com/jloyd237/cri](https://github.com/jlloyd237/)
