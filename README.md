@@ -11,9 +11,10 @@ A GUI-based robot jogger tool is also included with the library.  This tool can 
 
 This fork extends the support to these robot arms:
 
+- Dobot CR - using the [TCP-IP-4Axis-Python library](https://github.com/Dobot-Arm/TCP-IP-CR-Python-CMD) 
+- Dobot MG400 - using the [TCP-IP-4Axis-Python library](https://github.com/Dobot-Arm/TCP-IP-4Axis-Python-CMD) 
 - Dobot Magician
-- Dobot MG400 - using the [TCP-IP-4Axis-Python library](https://github.com/Dobot-Arm/TCP-IP-4Axis-Python) 
-- Simulated robot arm - using the [Tactile Gym library](https://github.com/ac-93/tactile_gym)
+- Simulated robot arm - using the [Tactile Sim library](https://github.com/dexterousrobot/tactile_sim)
 
 A GUI-based robot jogger tool is also included with the library.  This tool can be used to move the robot into different configurations.
 
