@@ -7,7 +7,7 @@ from threading import Thread
 
 import numpy as np
 
-from cri.transforms import euler2quat, quat2euler, transform, inv_transform
+from cri.transforms import euler2quat, quat2euler, transform, inv_transform, frame
 
 
 class InvalidEulerAxes(ValueError):
@@ -336,13 +336,29 @@ class SyncRobot(Robot):
 
     @property
     def tcp(self):
-        """Returns the tool center point (TCP) of the robot.
+        """Returns the tool center point (TCP) of the robot. Definition in Robot class.
         """
-        return quat2euler(self.controller.tcp, self._axes)
+        return quat2euler(self._tcp_q, self._axes)
 
     @tcp.setter
     def tcp(self, tcp):
+        """Sets the tool center point (TCP) of the robot. 
+        """
+        check_pose(tcp)
+        self.controller_tcp = (0, 0, 0, 0, 0, 0) # zero as can persist on robot
+        self._tcp_q = np.array(euler2quat(tcp, self._axes)) 
+        
+    @property
+    def tcp_controller(self):
+        """Returns the tool center point (TCP) of the robot.
+        Version that points to Robot Controller/API.
+        """
+        return quat2euler(self.controller.tcp, self._axes)
+
+    @tcp_controller.setter
+    def tcp_controller(self, tcp):
         """Sets the tool center point (TCP) of the robot.
+        Version that points to Robot Controller/API.
         """
         check_pose(tcp)
         self.controller.tcp = euler2quat(tcp, self._axes)
@@ -424,15 +440,19 @@ class SyncRobot(Robot):
     def pose(self):
         """Returns the current TCP pose in the reference coordinate frame.
         """
-        pose_q = self.controller.pose
-        return quat2euler(transform(pose_q, self._coord_frame_q), self._axes)
-
+        base_pose_q = self.controller.pose
+        pose_q = transform(base_pose_q, self._coord_frame_q)
+        frame_q = frame(pose_q, self._tcp_q)
+        return quat2euler(frame_q, self._axes)
+    
     @property
     def target_pose(self):
         """Returns the target TCP pose in the reference coordinate frame.
         """
-        pose_q = self.controller.commanded_pose
-        return quat2euler(transform(pose_q, self._coord_frame_q), self._axes)
+        base_pose_q = self.controller.commanded_pose
+        pose_q = transform(base_pose_q, self._coord_frame_q)
+        frame_q = frame(pose_q, self._tcp_q)
+        return quat2euler(frame_q, self._axes)
 
     @property
     def elbow(self):
@@ -458,19 +478,25 @@ class SyncRobot(Robot):
         specified pose in the reference coordinate frame.
         """
         check_pose(pose)
-        target_base_pose_q = inv_transform(euler2quat(pose, self._axes), self._coord_frame_q)
-        self.controller.move_linear(target_base_pose_q, elbow)
+        pose_q = euler2quat(pose, self._axes)
+        tcp_pose_q = inv_transform(self._tcp_q, pose_q)
+        base_tcp_pose_q = inv_transform(tcp_pose_q, self._coord_frame_q) 
+        self.controller.move_linear(base_tcp_pose_q, elbow)
 
     def move_circular(self, via_pose, end_pose, elbow=None):
         """Executes a movement in a circular path from the current TCP pose,
         through via_pose, to end_pose in the reference coordinate frame.
         """
         check_pose(via_pose)
+        via_pose_q = euler2quat(via_pose, self._axes)
+        base_via_pose_q = inv_transform(via_pose_q, self._coord_frame_q)
+        base_via_pose_tcp_q = transform(base_via_pose_q, self._tcp_q)
         check_pose(end_pose)
-        via_base_pose_q = inv_transform(euler2quat(via_pose, self._axes), self._coord_frame_q)
-        target_base_pose_q = inv_transform(euler2quat(end_pose, self._axes), self._coord_frame_q)
-        self.controller.move_circular(via_base_pose_q, target_base_pose_q, elbow)
-   
+        end_pose_q = euler2quat(via_pose, self._axes)
+        base_end_pose_q = inv_transform(end_pose_q, self._coord_frame_q)
+        base_end_pose_tcp_q = transform(base_end_pose_q, self._tcp_q)
+        self.controller.move_circular(base_via_pose_tcp_q, base_end_pose_tcp_q, elbow)
+
     def close(self):
         """Releases any resources held by the robot (e.g., sockets).
         """
@@ -511,6 +537,14 @@ class AsyncRobot(Robot):
     @tcp.setter
     def tcp(self, tcp):
         self.sync_robot.tcp = tcp
+
+    @property
+    def tcp_controller(self):
+        return self.sync_robot.tcp_controller
+
+    @tcp_controller.setter
+    def tcp_controller(self, tcp):
+        self.sync_robot.tcp_controller = tcp
 
     @property
     def coord_frame(self):

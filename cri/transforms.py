@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Functions for converting between euler- and quaternion-based
 poses and coordinate frames, and for transforming between frames.
 """
@@ -107,7 +106,7 @@ def transform(pose_a, frame_b_a):
     return pose_b
 
 def inv_transform(pose_b, frame_b_a):
-    """Inverse transforms  a quaternion pose between reference frames.
+    """Inverse transforms a quaternion pose between reference frames.
         
     Transforms a pose in reference frame B to a pose in reference frame
     A (B is expressed relative to A).
@@ -116,3 +115,46 @@ def inv_transform(pose_b, frame_b_a):
     rot_a = qmult(frame_b_a[3:], pose_b[3:]);
     pose_a = np.concatenate((pos_a, rot_a))
     return pose_a
+
+def frame(pose_a, pose_b):
+    """Find frame that pose in reference frame B is a pose in reference frame
+    A (B is expressed relative to A).
+    """
+    rot_b_a = qmult(pose_a[3:], qinverse(pose_b[3:]))
+    pos_b_a = pose_a[:3] - rotate_vector(pose_b[:3], rot_b_a)
+    frame_b_a = np.concatenate((pos_b_a, rot_b_a))
+    return frame_b_a
+
+def transform_euler(pose_a, frame_b_a, axes='sxyz'):
+    """Transforms an Euler pose between reference frames.
+
+    Transforms a pose in reference frame A to a pose in reference frame
+    B (B is expressed relative to reference frame A).
+    """
+    pose_a_q = euler2quat(pose_a, axes)
+    frame_b_a_q = euler2quat(frame_b_a, axes)
+    pose_b_q = transform(pose_a_q, frame_b_a_q)
+    pose_b = quat2euler(pose_b_q, axes)
+    return pose_b
+
+def inv_transform_euler(pose_b, frame_b_a, axes='sxyz'):
+    """Inverse transforms an Euler pose between reference frames.
+
+    Transforms a pose in reference frame B to a pose in reference frame
+    A (B is expressed relative to A).
+    """
+    pose_b_q = euler2quat(pose_b, axes)
+    frame_b_a_q = euler2quat(frame_b_a, axes)
+    pose_a_q = inv_transform(pose_b_q, frame_b_a_q)
+    pose_a = quat2euler(pose_a_q, axes)
+    return pose_a
+
+def frame_euler(pose_a, pose_b, axes='sxyz'):
+    """Find frame that pose in reference frame B is a pose in reference frame
+    A (B is expressed relative to A).
+    """
+    pose_a_q = euler2quat(pose_a, axes)
+    pose_b_q = euler2quat(pose_b, axes)
+    frame_b_a_q = frame(pose_a_q, pose_b_q)
+    frame_b_a = quat2euler(frame_b_a_q, axes)
+    return frame_b_a
